@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="unita-logo.jpeg" alt="UNITA Logo" width="200">
+</p>
+
 # UNITA
 
 ### Global P2P Liquid Democracy & Resource Equilibrium
