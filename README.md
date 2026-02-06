@@ -10,15 +10,15 @@
 
 ## The Name
 
-Each letter represents a value from a different civilization, making the name a bridge between East, West, North, and South:
+To ensure UNITA is truly universal, each letter bridges major cultural and linguistic blocks — Anglosphere, Slavic, Hispanic/Latin American, African, Asian, and Arabic. The name is a literal bridge between East, West, North, and South:
 
-| | Value | Origin | Meaning |
-|---|-------|--------|---------|
-| **U** | Ubuntu | African | "I am because we are." Collective responsibility. |
-| **N** | Nyaya / Narod | Indian / Slavic | Justice and the power of the people. |
-| **I** | Ijtihad | Arabic | Reasoned struggle — the duty to think before you act. |
-| **T** | Tao | Chinese | The Way — transparency in the flow of data. |
-| **A** | Areté | Greek | Virtue — the power of the individual to act. |
+| Letter | Concept | Culture | Meaning in the Project |
+|--------|---------|---------|----------------------|
+| **U** | Ubuntu | African | "I am because we are." Collective social responsibility. |
+| **N** | Nyaya / Narod | Indian / Slavic | Nyaya (Logic/Justice) and Narod (The People/Nation). The power of the collective will. |
+| **I** | Ijtihad / Integrity | Arabic / Western | Ijtihad (Reasoned struggle) and Integrity (Honesty). The duty to be truthful and educated. |
+| **T** | Tao / Truth | Chinese / English | Tao (The Way) and Truth. Absolute transparency in the P2P flow of data. |
+| **A** | Areté / Acción | Greek / Spanish | Areté (Virtue) and Acción (Direct Action/Agency). The power of the individual to act and vote. |
 
 ---
 
