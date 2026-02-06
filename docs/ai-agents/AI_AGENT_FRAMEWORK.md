@@ -233,12 +233,12 @@ Zero-Knowledge Machine Learning enables cryptographic verification of AI inferen
 
 ### 8. Integration with Existing Platforms
 
-#### 7.1 Collective Intelligence Platforms
+#### 8.1 Collective Intelligence Platforms
 - **[Polis](https://pol.is/)**: Import opinion clustering for pre-vote consensus mapping
 - **[Make.org Dialogue](https://about.make.org/)**: Multilingual citizen co-construction
 - **[Decidim](https://decidim.org/)**: Open-source participatory democracy integration
 
-#### 7.2 Governance Platforms
+#### 8.2 Governance Platforms
 - **[Tally](https://tally.xyz/)**: On-chain governance execution (MCP server available)
 - **[Snapshot](https://snapshot.org/)**: Off-chain voting for non-binding polls
 - **[Aragon](https://aragon.org/)**: DAO framework for organizational governance
