@@ -124,15 +124,27 @@ export default async function ProposalsPage({
                   <span>{new Date(p.createdAt).toLocaleDateString()}</span>
                   {agentCount > 0 && (
                     <span className="text-blue-400">
-                      {agentCount}/3 agents analyzed
+                      {agentCount}/3 analyzed
                     </span>
                   )}
                   {totalVotes > 0 && (
-                    <span>
-                      <span className="text-green-400">{yesCount} YES</span>
-                      {" / "}
-                      <span className="text-red-400">{noCount} NO</span>
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-2 w-20 overflow-hidden rounded-full">
+                        <div
+                          className="bg-green-600"
+                          style={{ width: `${(yesCount / totalVotes) * 100}%` }}
+                        />
+                        <div
+                          className="bg-red-600"
+                          style={{ width: `${(noCount / totalVotes) * 100}%` }}
+                        />
+                      </div>
+                      <span>
+                        <span className="text-green-400">{yesCount}</span>
+                        {"/"}
+                        <span className="text-red-400">{noCount}</span>
+                      </span>
+                    </div>
                   )}
                 </div>
               </a>

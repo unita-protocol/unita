@@ -1,4 +1,27 @@
-export default function Home() {
+import { db } from "@/lib/db";
+import { proposals, votes, groupMembers } from "@unita/db/schema";
+import { count, eq } from "drizzle-orm";
+
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const [proposalCount] = await db
+    .select({ count: count() })
+    .from(proposals);
+
+  const [openCount] = await db
+    .select({ count: count() })
+    .from(proposals)
+    .where(eq(proposals.status, "open"));
+
+  const [voteCount] = await db
+    .select({ count: count() })
+    .from(votes);
+
+  const [voterCount] = await db
+    .select({ count: count() })
+    .from(groupMembers);
+
   return (
     <div className="flex flex-col items-center gap-12 py-16">
       <div className="text-center">
@@ -6,6 +29,22 @@ export default function Home() {
         <p className="mt-4 text-lg text-neutral-400">
           Global P2P Liquid Democracy &amp; Resource Equilibrium
         </p>
+      </div>
+
+      {/* Stats */}
+      <div className="flex gap-8 text-center">
+        <div>
+          <p className="text-2xl font-bold">{openCount.count}</p>
+          <p className="text-xs text-neutral-500">Open Proposals</p>
+        </div>
+        <div>
+          <p className="text-2xl font-bold">{voteCount.count}</p>
+          <p className="text-xs text-neutral-500">Votes Cast</p>
+        </div>
+        <div>
+          <p className="text-2xl font-bold">{voterCount.count}</p>
+          <p className="text-xs text-neutral-500">Registered Voters</p>
+        </div>
       </div>
 
       <div className="grid w-full max-w-2xl gap-6 sm:grid-cols-2">
@@ -25,7 +64,7 @@ export default function Home() {
         >
           <h2 className="text-lg font-semibold">View Proposals</h2>
           <p className="mt-2 text-sm text-neutral-400">
-            Browse open proposals, read AI analysis, cast anonymous votes.
+            Browse {proposalCount.count} proposals, read AI analysis, cast anonymous votes.
           </p>
         </a>
 
