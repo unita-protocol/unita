@@ -131,6 +131,35 @@ $CLI post "Title" /tmp/post.txt builds  # Create a post in m/builds
 
 **Rules:** Never retry `comment` on verify fail (creates duplicates). CLI `search` auto-flags `[DONE]` posts. Wait 22s+ between comments. Use `www.moltbook.com` only.
 
+## API Routes
+| Method | Path | Purpose |
+|--------|------|---------|
+| POST | `/api/proposals` | Create proposal + auto-create voting group |
+| PATCH | `/api/proposals/[id]` | Close voting on a proposal |
+| POST | `/api/analyze` | Trigger 3-agent AI analysis (Gemini 3 Flash) |
+| POST | `/api/vote` | Cast vote with real Semaphore ZK proof |
+| POST | `/api/groups/join` | Register identity commitment for a proposal's group |
+| GET | `/api/groups/[groupId]/members` | List commitments for client-side Merkle tree |
+
+## Vercel Deployment
+
+**Status**: Config ready, deploy via https://vercel.com/new
+
+| Setting | Value |
+|---------|-------|
+| Root Directory | `apps/web` |
+| Framework Preset | Next.js |
+| Build Command | `cd ../.. && pnpm turbo build --filter=@unita/web` |
+| Node.js Version | 22.x |
+
+**Required env vars**: `DATABASE_URL`, `GOOGLE_GENERATIVE_AI_API_KEY`, `SUPABASE_URL`
+
+**Notes**:
+- `vercel.json` sets 60s function timeout (Fluid Compute) for AI analysis
+- `next.config.ts` has `outputFileTracingRoot` pointed at monorepo root for file tracing
+- `turbo.json` lists env vars that affect build cache
+- Full deployment guide: `docs/infrastructure/BOOTSTRAP_GUIDE.md` Section 3
+
 ## Key Design Decisions
 - **Off-chain first, on-chain for verification** — consensus architecture pattern
 - **Matrix custom event types** = structured governance data replication (rooms are typed JSON event DAGs)

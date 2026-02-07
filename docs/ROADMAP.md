@@ -63,35 +63,44 @@ unita/
 
 ---
 
-## The MVP Flow
+## The MVP Flow (Implemented)
 
 ### 1. Create Proposal
-User submits title + description. Saved to Supabase via Drizzle.
+User submits title + description via `/proposals/new`. Saved to Supabase via Drizzle. A Semaphore voting group is auto-created. AI analysis (3 agents) starts automatically in the background.
 
 ### 2. AI Deliberation (3 Agents)
-Each proposal is analyzed by three AI agents running in parallel:
+Each proposal is analyzed by three AI agents running in parallel (~12.5s total):
 
-**Ijtihad Agent** (Deliberation):
+**Ijtihad Agent** (Deliberation) — green card:
 > Steel-man FOR and AGAINST. Identify 3 unintended consequences. List who benefits and who pays. Rate logical consistency 1-10.
 
-**Economist Agent** (Sustainability):
+**Economist Agent** (Sustainability) — blue card:
 > Calculate resource intensity. Suggest 3 budget trade-offs. Expose hidden costs of "free" promises.
 
-**Guardian Agent** (Constitutional):
+**Guardian Agent** (Constitutional) — amber card:
 > Check against UNITA Constitution Articles 1-40. Rate: PASS / CONDITIONAL / REJECT. Suggest amendments if needed.
 
-All three agents run independently on Gemini 3 Flash (free tier). When multi-model budget allows, each agent can use a different model (Claude, Gemini, GPT). Disagreements are shown to voters — no hidden aggregation.
+All three agents run independently on Gemini 3 Flash (free tier). Results are shown as collapsible, color-coded cards. The Guardian verdict (PASS/CONDITIONAL/REJECT) is highlighted as a banner at the top.
 
-### 3. Anonymous Voting
-- User generates Semaphore identity (EdDSA keypair, stored in browser)
-- Joins the proposal's voting group
-- Generates ZK proof: "I am a member and I vote YES/NO" — without revealing who
-- Proof verified on-chain or server-side
+### 3. Anonymous Voting (Real ZK Proofs)
+Three-step flow on the proposal detail page:
+1. **Generate identity** — User creates Semaphore identity at `/identity` (EdDSA keypair, stored in browser localStorage)
+2. **Register to vote** — Registers identity commitment with the proposal's voting group via `/api/groups/join`
+3. **Cast vote** — Generates real Semaphore ZK proof (~10-30s, ~15MB SNARK artifacts on first use), sends proof to `/api/vote` for server-side verification
 
-### 4. Results
-- Live vote tally (verified proofs only)
-- AI analysis summary with disagreement highlights
-- Participation statistics
+The ZK proof guarantees: "I am a registered member AND I vote YES/NO" — without revealing which member. The nullifier prevents double-voting on the same proposal.
+
+### 4. Results Dashboard
+- Visual green/red vote bar with YES/NO percentages
+- Participation stats: "X of Y registered voters have voted (Z%)"
+- Guardian verdict banner (PASS/CONDITIONAL/REJECT)
+- Vote counts + mini vote bars on the proposals list page
+- Home page shows live stats (open proposals, votes cast, registered voters)
+
+### 5. Proposal Lifecycle
+- **Open** → accepting registrations and votes
+- **Closed** → no more votes (via "Close Voting" button)
+- Filter proposals by status: All / Open / Closed
 
 ---
 
@@ -118,6 +127,24 @@ All three agents run independently on Gemini 3 Flash (free tier). When multi-mod
 > 2. Does it conflict with any Governance Principles (Articles 31-50)?
 > 3. If violations are found, suggest amendments that would make it constitutional.
 > 4. Rate constitutional compliance: PASS / CONDITIONAL / REJECT."
+
+---
+
+## Deployment
+
+**Hosting**: Vercel Free tier (auto-deploys from GitHub `main` branch)
+**Database**: Supabase Free tier (500MB Postgres, eu-west-1)
+**AI**: Gemini 3 Flash free tier (5 RPM, 250 RPD, $0/month)
+
+Deploy instructions: See `docs/infrastructure/BOOTSTRAP_GUIDE.md` Section 3.
+
+Quick summary:
+1. Go to https://vercel.com/new
+2. Import `unita-protocol/unita` from GitHub
+3. Set Root Directory to `apps/web`
+4. Set Build Command to `cd ../.. && pnpm turbo build --filter=@unita/web`
+5. Add env vars: `DATABASE_URL`, `GOOGLE_GENERATIVE_AI_API_KEY`, `SUPABASE_URL`
+6. Deploy
 
 ---
 

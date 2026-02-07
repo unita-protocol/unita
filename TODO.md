@@ -80,8 +80,20 @@
 
 ### Deployment
 - [x] Vercel config: outputFileTracingRoot for monorepo, 60s function timeout
-- [ ] Deploy to Vercel (connect GitHub repo, set env vars)
-- [ ] Test end-to-end: create proposal → AI analyzes → generate identity → register → vote with ZK → see results
+- [ ] **Deploy to Vercel** — step-by-step:
+  1. Go to https://vercel.com/new
+  2. Import `unita-protocol/unita` from GitHub
+  3. Set **Root Directory** to `apps/web` (click Edit)
+  4. Set **Framework Preset** to `Next.js` (auto-detected)
+  5. Set **Build Command** to `cd ../.. && pnpm turbo build --filter=@unita/web`
+  6. Set **Node.js Version** to `22.x`
+  7. Add env vars (copy from `.env`):
+     - `DATABASE_URL` — Supabase pooler connection string
+     - `GOOGLE_GENERATIVE_AI_API_KEY` — Gemini API key
+     - `SUPABASE_URL` — Supabase project URL
+  8. Click **Deploy**
+  - Full guide: `docs/infrastructure/BOOTSTRAP_GUIDE.md` Section 3
+- [ ] Test E2E on production: create proposal → AI analyzes → generate identity → register → vote with ZK → see results
 
 ---
 

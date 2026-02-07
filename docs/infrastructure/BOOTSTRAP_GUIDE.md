@@ -55,7 +55,103 @@ Tags: unita, github
 
 ---
 
-### 3. Matrix Channel (Immediate — Dogfooding our own stack)
+### 3. Vercel Deployment (MVP Hosting)
+
+UNITA's Next.js app deploys to Vercel Free tier from the pnpm/Turborepo monorepo.
+
+> **Reference**: [Vercel Monorepo Docs](https://vercel.com/docs/monorepos/turborepo), [Vercel Deployment Guide](https://vercel.com/docs/git)
+
+#### Step 1: Import the Repository
+
+1. Go to **https://vercel.com/new**
+2. Sign in with your GitHub account (the one that owns `unita-protocol` org)
+3. Under "Import Git Repository", find and click **Import** next to `unita-protocol/unita`
+
+#### Step 2: Configure Project Settings
+
+Vercel auto-detects Turborepo monorepos, but verify these settings:
+
+| Setting | Value |
+|---------|-------|
+| **Framework Preset** | Next.js |
+| **Root Directory** | `apps/web` (click Edit to change) |
+| **Build Command** | `cd ../.. && pnpm turbo build --filter=@unita/web` |
+| **Output Directory** | `.next` (auto-detected) |
+| **Install Command** | `pnpm install` (auto-detected) |
+| **Node.js Version** | 22.x |
+
+**Critical**: The Root Directory **must** be `apps/web`. Vercel will automatically enable "Include source files outside of the Root Directory in the Build Step" for monorepo projects, which allows the build to access `packages/*`. If not enabled automatically, toggle it manually under Root Directory settings.
+
+The custom build command `cd ../.. && pnpm turbo build --filter=@unita/web` is needed because Vercel runs the build from within `apps/web`, but Turborepo needs to run from the monorepo root to resolve workspace dependencies. If Vercel auto-detects the Turborepo setup correctly, you can also leave Build Command blank and let it use the default.
+
+#### Step 3: Set Environment Variables
+
+Add these three env vars (all targets: Production, Preview, Development):
+
+| Variable | Value | Notes |
+|----------|-------|-------|
+| `DATABASE_URL` | `postgresql://postgres.xxxx:password@aws-1-eu-west-1.pooler.supabase.com:6543/postgres` | Supabase pooler connection string |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | `AIza...` | Google AI Studio key for Gemini 3 Flash |
+| `SUPABASE_URL` | `https://xxxx.supabase.co` | Supabase project URL |
+
+Copy these values from your local `.env` file. Use the **Supabase pooler** URL (port 6543), not the direct connection (which is IPv6-only and won't work from Vercel).
+
+#### Step 4: Deploy
+
+1. Click **Deploy**
+2. First build takes ~30-60 seconds
+3. Vercel assigns a URL like `unita-xxxx.vercel.app`
+
+#### Step 5: Verify
+
+Test the full E2E flow on the production URL:
+1. **Home page** loads with live stats
+2. **Create Proposal** → saves to Supabase, AI analysis starts automatically
+3. **Refresh after ~30s** → see 3-agent AI analysis
+4. **Go to /identity** → generate ZK identity
+5. **Back to proposal** → Register to Vote → Vote YES/NO with real ZK proof
+6. **See results** → visual vote bar, participation stats
+
+#### Post-Deploy Configuration
+
+**Custom Domain** (optional):
+1. Go to Project Settings → Domains
+2. Add your domain (e.g., `app.unita.org`)
+3. Follow DNS instructions (CNAME or A record)
+
+**Auto-Deploy**: Every push to `main` triggers a new deployment. Preview deployments are created for pull requests.
+
+**Function Timeout**: The `vercel.json` in `apps/web/` sets API routes to 60s max duration (Fluid Compute), which handles the ~12.5s AI analysis without issues.
+
+**Monorepo Caching**: Vercel provides free Remote Cache for Turborepo builds. To enable:
+```bash
+cd /data/unita
+npx turbo link  # Links to Vercel Remote Cache
+```
+
+#### Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| "No Next.js version detected" | Verify Root Directory is `apps/web`, not monorepo root |
+| Build fails with missing packages | Ensure `pnpm-workspace.yaml` is at monorepo root and `node-linker=hoisted` is in `.npmrc` |
+| Database connection fails | Use Supabase **pooler** URL (port 6543), not direct (port 5432). Pooler user is `postgres.[project-ref]` |
+| AI analysis times out | `vercel.json` sets 60s timeout. If still timing out, check Gemini API key is valid |
+| `Cannot find module '@unita/db'` | `transpilePackages` in `next.config.ts` must include all workspace packages |
+
+#### KeePass Entry
+```
+Title: UNITA Vercel
+URL: https://vercel.com/unita-protocol
+Project: unita
+Production URL: https://unita-xxxx.vercel.app
+Notes: Deployed from apps/web. Auto-deploys on push to main.
+Tags: unita, vercel, hosting
+```
+
+---
+
+### 4. Matrix Channel (Immediate — Dogfooding our own stack)
 
 Since Matrix is our primary messaging layer (ADR-002), we should use it from day one.
 
@@ -357,6 +453,9 @@ UNITA/
 |---------|------|-------------|
 | Gmail | Free | Project email, GCP admin |
 | GitHub Org | Free | Code hosting, CI/CD, Pages |
+| Vercel Free | Free | Next.js hosting, serverless functions, auto-deploy |
+| Supabase Free | Free | 500MB Postgres, auth, real-time |
+| Google AI (Gemini 3 Flash) | Free | 5 RPM, 250 RPD AI analysis |
 | GCP e2-micro | Free (always) | VM for Matrix homeserver |
 | DuckDNS | Free | DNS for homeserver |
 | Let's Encrypt | Free | TLS certificates |
@@ -370,10 +469,11 @@ UNITA/
 
 ## Checklist
 
-- [ ] Create Gmail account (`unita.protocol@gmail.com`)
-- [ ] Enable 2FA on Gmail
-- [ ] Create KeePass database with structure above
-- [ ] Create GitHub organization
+- [x] Create Gmail account (`unita.protocol@gmail.com`)
+- [x] Enable 2FA on Gmail
+- [x] Create KeePass database with structure above
+- [x] Create GitHub organization
+- [ ] Deploy to Vercel (see Section 3)
 - [ ] Create GCP project (link Gmail account)
 - [ ] Set $1/month budget alert on GCP
 - [ ] Create e2-micro VM on GCP
