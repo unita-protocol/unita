@@ -43,6 +43,47 @@ export function RequestAnalysisButton({ proposalId }: { proposalId: string }) {
   );
 }
 
+export function CloseProposalButton({ proposalId }: { proposalId: string }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleClose() {
+    if (!confirm("Close voting on this proposal? This cannot be undone.")) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/proposals/${proposalId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "closed" }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to close proposal");
+      }
+      router.refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Unknown error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="mt-4">
+      <button
+        className="rounded-md border border-neutral-700 px-3 py-1.5 text-xs text-neutral-400 hover:border-neutral-500 hover:text-neutral-200 disabled:opacity-50"
+        onClick={handleClose}
+        disabled={loading}
+      >
+        {loading ? "Closing..." : "Close Voting"}
+      </button>
+      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
+    </div>
+  );
+}
+
 /**
  * Combined registration + voting component.
  * Handles: identity check, registration, and ZK proof generation.

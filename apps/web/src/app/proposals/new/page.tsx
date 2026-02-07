@@ -28,6 +28,16 @@ export default function NewProposalPage() {
       }
 
       const { id } = await res.json();
+
+      // Fire AI analysis in background — don't await
+      fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ proposalId: id }),
+      }).catch(() => {
+        // Analysis failure is non-critical — user can retry from proposal page
+      });
+
       router.push(`/proposals/${id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -91,8 +101,12 @@ export default function NewProposalPage() {
           disabled={submitting}
           className="w-full rounded-md bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200 disabled:opacity-50"
         >
-          {submitting ? "Creating..." : "Create Proposal & Trigger AI Analysis"}
+          {submitting ? "Creating..." : "Create Proposal"}
         </button>
+
+        <p className="text-xs text-neutral-500 text-center">
+          AI analysis by 3 agents (Ijtihad, Economist, Guardian) starts automatically after creation.
+        </p>
       </form>
     </div>
   );

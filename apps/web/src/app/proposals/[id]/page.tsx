@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { proposals, aiAnalyses, votes, groupMembers } from "@unita/db/schema";
 import { eq, count } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { RequestAnalysisButton, VotingPanel } from "./actions";
+import { RequestAnalysisButton, VotingPanel, CloseProposalButton } from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -121,7 +121,10 @@ export default async function ProposalPage({
         {analyses.length === 0 ? (
           <div className="mt-4 rounded-lg border border-neutral-800 bg-neutral-900 p-6 text-center">
             <p className="text-neutral-400">
-              AI analysis pending. It will appear here once complete.
+              AI analysis in progress — 3 agents are analyzing this proposal.
+            </p>
+            <p className="mt-1 text-xs text-neutral-500">
+              Refresh the page in ~30 seconds to see results.
             </p>
             <RequestAnalysisButton proposalId={id} />
           </div>
@@ -230,11 +233,20 @@ export default async function ProposalPage({
         )}
 
         {/* Registration + Voting */}
-        <VotingPanel
-          proposalId={id}
-          groupId={proposal.groupId}
-          memberCommitments={memberCommitments}
-        />
+        {proposal.status === "open" ? (
+          <>
+            <VotingPanel
+              proposalId={id}
+              groupId={proposal.groupId}
+              memberCommitments={memberCommitments}
+            />
+            <CloseProposalButton proposalId={id} />
+          </>
+        ) : (
+          <p className="mt-4 text-sm text-neutral-500">
+            Voting is closed on this proposal.
+          </p>
+        )}
       </section>
     </div>
   );

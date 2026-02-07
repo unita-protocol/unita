@@ -68,15 +68,20 @@
   - YES/NO counts displayed on proposal page
 - [x] **Client components** — extracted interactive buttons (`RequestAnalysisButton`, `VoteButtons`)
 
-### Remaining MVP Features
-- [ ] **ZK identity** — Semaphore identity generation in browser, group membership
-- [ ] **Real ZK proofs** — replace placeholder proofs with Semaphore proof generation + verification
-- [ ] **Results dashboard** — enhanced vote results, AI analysis summary, participation stats
+### Remaining MVP Features (Done)
+- [x] **ZK identity** — Semaphore identity generation in browser, group membership
+- [x] **Real ZK proofs** — replace placeholder proofs with Semaphore proof generation + verification
+  - VotingPanel: 3-step flow (identity check → register → vote with real Semaphore proof)
+  - Auto-create voting group when proposal is created (groupId FK)
+  - Group join API + members API for Merkle tree construction
+  - Dynamic import of ZK library (~15MB WASM on first use)
+- [x] **Results dashboard** — visual vote bar, participation stats, Guardian verdict banner
+  - Collapsible color-coded AI analysis cards (green/blue/amber per agent)
 
 ### Deployment
-- [ ] Deploy to Vercel (connect GitHub repo)
-- [ ] Configure Supabase connection via Vercel env vars
-- [ ] Test end-to-end: create proposal → AI analyzes → vote → see results
+- [x] Vercel config: outputFileTracingRoot for monorepo, 60s function timeout
+- [ ] Deploy to Vercel (connect GitHub repo, set env vars)
+- [ ] Test end-to-end: create proposal → AI analyzes → generate identity → register → vote with ZK → see results
 
 ---
 
