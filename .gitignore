@@ -7,6 +7,12 @@
 *.key
 *.p12
 
+# Private operational context (credentials map, account details)
+.claude-private/
+
+# Moltbook post tracking and engagement data
+.moltbook/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -18,11 +24,13 @@ Thumbs.db
 *.swp
 *.swo
 
-# Node (future)
+# Node
 node_modules/
 dist/
 build/
 .next/
+.turbo/
+pnpm-lock.yaml
 
 # Rust (future)
 target/

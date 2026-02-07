@@ -112,8 +112,11 @@ gcloud config set project unita-protocol
 gcloud compute instances create unita-node-01 \
   --zone=us-central1-a \
   --machine-type=e2-micro \
-  --image-family=debian-12 \
+  --image-family=debian-13 \
   --image-project=debian-cloud \
+  # NOTE: If debian-13 isn't available yet on GCP, use:
+  #   --image-family=ubuntu-2404-lts-amd64 --image-project=ubuntu-os-cloud
+  # Check available images: gcloud compute images list --project=debian-cloud --filter="family~debian"
   --boot-disk-size=30GB \
   --tags=http-server,https-server
 

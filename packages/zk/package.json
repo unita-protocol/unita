@@ -1,0 +1,18 @@
+{
+  "name": "@unita/zk",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./identity": "./src/identity.ts",
+    "./group": "./src/group.ts",
+    "./proof": "./src/proof.ts"
+  },
+  "dependencies": {
+    "@semaphore-protocol/core": "^4.14.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

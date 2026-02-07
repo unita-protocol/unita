@@ -215,7 +215,30 @@
 - **Status**: Production; used by universities and organizations
 - **UNITA learns**: Natural fit for UNITA's budget trade-off mechanism and proposal prioritization
 
-#### 5.6 Guardrails AI
+#### 5.6 Habermas Machine (Google DeepMind)
+- **URL**: [Science (2025)](https://www.science.org/doi/10.1126/science.adq2852)
+- **What**: AI system that mediates human deliberation; generated statements that groups preferred over human-written ones
+- **Key Finding**: Groups reaching unanimous agreement increased from 22.8% to 38.6% with AI mediation
+- **Status**: Research; published in Science; follow-up studies in progress
+- **UNITA learns**: AI mediation works, but UNITA intentionally avoids mediation (Article 31: AI informs, never decides). The Habermas Machine validates the benefit; UNITA's approach preserves human agency by making AI advisory, not mediating.
+
+#### 5.7 Deliberation.io (UMass Amherst)
+- **What**: Platform for citizen panel deliberation with AI support; structured small-group discussions
+- **Status**: Academic research
+- **UNITA learns**: Panel-based deliberation doesn't scale to global participation. UNITA uses open participation with AI analysis, not curated panels.
+
+#### 5.8 NEAR AI Delegates
+- **What**: AI agents that vote on behalf of human delegators in NEAR governance
+- **Status**: Pilot stage on NEAR Protocol
+- **UNITA learns**: Closest to voter-side AI concept, but centrally managed. UNITA distributes AI to voter's choice of provider, and AI never votes — only informs.
+
+#### 5.9 Metagov Interop ($1.4M funded)
+- **URL**: [metagov.org](https://metagov.org/)
+- **What**: JSON-LD deliberation data interchange standard for cross-platform governance
+- **Status**: Funded, active development
+- **UNITA learns**: Critical for interoperability. UNITA's Proposal Synapse (ADR-003) should adopt Metagov standards for structured governance data.
+
+#### 5.10 Guardrails AI
 - **URL**: [guardrailsai.com](https://www.guardrailsai.com/)
 - **What**: Python framework for input/output validation of LLM responses with Validators Hub
 - **Features**: Structured output enforcement, cross-LLM validation via LiteLLM, custom validators
@@ -232,7 +255,26 @@
 - **Status**: Transitioning to Gitcoin 3.0 (plurality of allocation mechanisms)
 - **UNITA learns**: QF works at scale; need multiple allocation mechanisms
 
-#### 6.2 RadicalxChange / Plural Voting
+#### 6.2 Allo Protocol (Gitcoin)
+- **URL**: [allo.gitcoin.co](https://allo.gitcoin.co/)
+- **What**: Composable on-chain allocation strategies — modular framework for distributing funds
+- **Status**: Production on Ethereum; powers Gitcoin Grants
+- **UNITA learns**: Allocation strategy abstraction pattern. Adaptable for Substrate. ADR-003 proposes similar composable allocation alongside voting.
+
+#### 6.3 Conviction Voting (1Hive / Commons Stack)
+- **URL**: [1hive.org](https://1hive.gitbook.io/1hive/)
+- **What**: Continuous resource allocation via token staking; conviction accumulates over time
+- **Mechanism**: Staking tokens on proposals; conviction grows with time staked; proposals pass when conviction exceeds dynamic threshold
+- **Status**: Production on Gnosis Chain (1Hive Gardens)
+- **UNITA learns**: Closest existing mechanism to UNITA's vision of simultaneous voting + resource allocation. ADR-003 adapts this for anonymous voting with quadratic scaling.
+
+#### 6.4 Optimism RetroPGF (Retroactive Public Goods Funding)
+- **URL**: [optimism.io/retropgf](https://community.optimism.io/docs/governance/retropgf-3/)
+- **What**: Retroactive funding of public goods based on demonstrated impact
+- **Status**: Production; Round 3 distributed $30M
+- **UNITA learns**: Retroactive validation of impact. UNITA could combine proactive allocation (during vote) with retroactive assessment (post-implementation).
+
+#### 6.5 RadicalxChange / Plural Voting
 - **URL**: [radicalxchange.org](https://www.radicalxchange.org/)
 - **What**: Mechanism design for democratic innovation (founded by Glen Weyl)
 - **Real-world use**: NYC District 9 ($1M budgeting), Nashville Metro Council
@@ -260,20 +302,22 @@
 
 What UNITA offers that no existing project combines:
 
-| Feature | Cardano | ICP | Aragon | Vocdoni | UNITA |
-|---------|---------|-----|--------|---------|-------|
-| Liquid Democracy | Yes | Yes | No | No | **Yes** |
-| ZK Anonymous Voting | No | No | No | Yes | **Yes** |
-| Anti-Collusion (MACI) | No | No | No | Partial | **Yes** |
-| AI Deliberation | No | No | No | No | **Yes** |
-| National ID Bridge | No | No | No | Partial | **Yes** |
-| Quadratic Voting | No | No | No | No | **Yes** |
-| Budget Equilibrium | No | No | No | No | **Yes** |
-| Constitutional AI | No | No | No | No | **Yes** |
-| Multi-Cultural AI | No | No | No | No | **Yes** |
-| Offline-First | No | No | No | Yes | **Yes** |
+| Feature | Cardano | ICP | Aragon | Vocdoni | 1Hive | UNITA |
+|---------|---------|-----|--------|---------|-------|-------|
+| Liquid Democracy | Yes | Yes | No | No | No | **Yes** |
+| ZK Anonymous Voting | No | No | No | Yes | No | **Yes** |
+| Anti-Collusion (MACI) | No | No | No | Partial | No | **Yes** |
+| AI Deliberation | No | No | No | No | No | **Yes** |
+| Voter-Side AI Agents | No | No | No | No | No | **Yes** |
+| Proposal Knowledge Base | No | No | No | No | No | **Yes** |
+| National ID Bridge | No | No | No | Partial | No | **Yes** |
+| Quadratic Voting | No | No | No | No | No | **Yes** |
+| Vote + Resource Allocation | No | No | No | No | Yes | **Yes** |
+| Constitutional AI | No | No | No | No | No | **Yes** |
+| Multi-Cultural AI | No | No | No | No | No | **Yes** |
+| Offline-First | No | No | No | Yes | No | **Yes** |
 
-**UNITA's thesis**: Democracy needs all of these simultaneously. Piecemeal solutions create gaps that bad actors exploit.
+**UNITA's thesis**: Democracy needs all of these simultaneously. Piecemeal solutions create gaps that bad actors exploit. ADR-003 adds three new differentiators: structured proposal knowledge bases ("synapses"), voter-side AI agents via MCP, and simultaneous voting + resource allocation.
 
 ---
 
@@ -316,3 +360,9 @@ What UNITA offers that no existing project combines:
 6. **AI mediators outperform humans** — Science journal (2026) found groups reaching unanimous agreement increased from 22.8% to 38.6% with AI mediation. Validates UNITA's Ijtihad AI approach.
 
 7. **AI fact-checking has limits** — 60% of AI search engine responses were found inaccurate (Tow Center). UNITA must use multi-model consensus + community verification, never autonomous fact-checking alone.
+
+8. **The "AI Penalty"** — Jungherr (2025) found people are less willing to engage in AI-facilitated deliberation compared to human-only processes. This validates UNITA's design choice to make AI optional: voters can read the synapse directly, use their own AI, or skip AI entirely (ADR-003).
+
+9. **Resource allocation during voting is unexplored** — Conviction Voting (1Hive), Allo Protocol (Gitcoin), and Optimism RetroPGF each tackle allocation separately from decision-making. No project combines anonymous voting + simultaneous resource allocation + AI deliberation. This is UNITA's proposed innovation (ADR-003).
+
+10. **Distributed AI deliberation is first-of-kind** — NEAR AI Delegates are closest (AI votes on behalf of delegators) but centrally managed. UNITA's Proposal Synapse + voter-side AI agent model (ADR-003) would be the first to combine: structured knowledge base per proposal, voter-chosen AI agents, distributed compute cost, and MCP-compatible interoperability.

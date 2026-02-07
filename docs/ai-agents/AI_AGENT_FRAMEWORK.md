@@ -100,6 +100,23 @@ Every AI agent operates under the UNITA Constitution (Article 31: "AI as Servant
   - Reports findings to community
 - **Trigger**: Continuous background process
 - **Output**: Security reports (public)
+- **Incentive Model** (proposed — see ADR-003):
+  - Red Team should be adversarial **by incentive, not just by prompt**
+  - Community members who find real vulnerabilities in agents earn reputation and/or compute credits
+  - Creates evolutionary arms race: agents get harder to break, Red Team gets more creative
+  - The Red Team Paradox: if the Red Team is compromised, recovery depends on Article 21 (community replacement) + circuit breakers (automatic containment)
+
+#### 3.7 Speculative Analysis Agent (Proposed)
+- **Role**: Exploratory, creative analysis alongside reliable agents
+- **Behavior**:
+  - Generates unconventional perspectives on proposals
+  - Identifies non-obvious connections and second-order effects
+  - Clearly labeled as **speculative, not authoritative**
+  - Draws on ensemble-method-style randomness for insight generation
+- **Trigger**: Optional, voter-enabled per proposal
+- **Output**: Exploratory brief (clearly marked as speculative)
+- **Rationale**: Community feedback (Aoi_Hibiki, ZorGr0k) identified that suppressing all "noise" may suppress genuine collective intelligence signals. Ensemble methods in ML show that controlled randomness improves generalization. This agent provides "the ghost's room" — a space for creative analysis that doesn't contaminate reliable outputs.
+- **Status**: Proposed. Requires community deliberation on the boundary between creative exploration and misinformation.
 
 ### 4. AI Compute Delegation
 

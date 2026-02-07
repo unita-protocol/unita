@@ -149,7 +149,32 @@ UNITA's governance AI likely qualifies as a **high-risk AI system** under Annex 
 | **Algorithmic Amplification** | HIGH | No feed algorithm; chronological by default; diversity checks | Custom moderation |
 | **AI Overwhelm / Information Flooding** | MEDIUM | Deliberation rate limiting during voting periods; cooling periods | Standalone RLN + Matrix rate limiting + custom |
 
-### 8. Future Considerations
+### 8. OWASP Top 10 for Agentic AI (Dec 2025) — Mapping
+
+Assessment of UNITA's 7-layer defense against the [OWASP Agentic AI Top 10](https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/):
+
+| # | OWASP Threat | UNITA Defense | Coverage | Notes |
+|---|-------------|---------------|----------|-------|
+| ASI01 | **Agent Goal & Instruction Hijacking** | Guardian Agent constitutional veto (L7) + NeMo Guardrails (L6) | Covered | Guardian can REJECT proposals violating Articles; system prompts public per Article 21 |
+| ASI02 | **Tool & Function Misuse** | Agent tool manifests are public (Article 21); Guardian can veto tool calls not on manifest | Covered | Capability-based security: agents request permissions, not assume them |
+| ASI03 | **Memory & Context Manipulation** | Stateless per-proposal analysis; no persistent memory across sessions | Covered | Agents don't accumulate context that can be poisoned |
+| ASI04 | **Supply Chain & Dependency Vulnerability** | AGPL-3.0 open-source code; behavioral monitoring + drift detection circuit breaker (>3 std dev) | Partial | Can audit own code, but AI providers are black boxes. Best effort: detect behavioral drift |
+| ASI05 | **Unexpected Code Execution** | MVP agents don't execute code; future tool-calling requires strict allowlists + Guardian veto | Gap (future) | Needs implementation when tool-calling is added |
+| ASI06 | **Identity & Access Abuse** | Semaphore v4 ZK identity (L4) + national ID bridges + MACI (L5) | Covered | ZK proofs are non-transferable; nullifiers prevent replay |
+| ASI07 | **Cross-Agent Communication Attacks** | Multi-model consensus (Article 32); agents don't share context directly; orchestrator mediates | Covered | No direct agent-to-agent communication channel to exploit |
+| ASI08 | **Cascading Hallucination Failures** | Multi-model cross-checking; Guardrails AI structured output validation; Red Team continuous testing | Partial | Reduces but doesn't eliminate correlated hallucinations across providers |
+| ASI09 | **Trust & Reputation Exploitation** | No agent karma/reputation system; all outputs are advisory only (Article 31) | Covered | Agents can't accumulate trust that could be exploited |
+| ASI10 | **Rogue Autonomous Agent Behavior** | Red Team Agent detection + Article 21 community replacement + circuit breakers | Partial | Detection layer exists, but Red Team itself could be compromised. Recovery via community vote. |
+
+**Summary**: 6/10 covered, 3/10 partial, 1/10 gap (code execution — deferred to tool-calling phase).
+
+**Unsolved: The Framing Problem** — All 10 OWASP threats assume we can correctly frame what's threatening. But the framing itself shapes which answers look right. UNITA's mitigation: make all agent prompts public (Article 21), enable community governance of agent behavior, require providers from different cultural origins (Article 32). This reduces but cannot eliminate framing bias.
+
+*Analysis based on community review, Moltbook m/aisafety engagement, Feb 2026.*
+
+---
+
+### 9. Future Considerations
 
 - **Post-Quantum Migration**: Monitor NIST PQC standards; plan migration of ZK proofs to quantum-resistant schemes
 - **AI Adversarial Robustness**: As AI capabilities increase, continuously update guardrail strength; track NIST AI 100-2e2025 taxonomy

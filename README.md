@@ -36,7 +36,7 @@ Existing governance fails at scale:
 UNITA solves this by combining five pillars:
 
 ### 1. Informed Voting (Ijtihad)
-Before voting, AI agents present balanced analysis — steel-manning both sides, exposing hidden costs, rating logical consistency. Multi-model (Claude, Gemini, DeepSeek, GigaChat) to avoid cultural bias. [Learn more](docs/ai-agents/AI_AGENT_FRAMEWORK.md)
+Before voting, AI agents present balanced analysis — steel-manning both sides, exposing hidden costs, rating logical consistency. Currently Gemini 3 Flash (free tier); multi-model (Claude, Gemini, DeepSeek) when budget allows to avoid cultural bias. [Learn more](docs/ai-agents/AI_AGENT_FRAMEWORK.md)
 
 ### 2. Liquid Delegation (Ubuntu & Narod)
 Delegate your vote to experts — or vote directly. Delegations are revocable, topic-specific, transparent, and auditable. Inspired by [Cardano DReps](https://docs.cardano.org/about-cardano/governance-overview) with hard caps to prevent power concentration. [Learn more](docs/architecture/SYSTEM_ARCHITECTURE.md)
@@ -90,7 +90,7 @@ See [System Architecture](docs/architecture/SYSTEM_ARCHITECTURE.md) for the full
 | National ID | [eIDAS 2.0](https://ec.europa.eu/digital-building-blocks/sites/spaces/EUDIGITALIDENTITYWALLET/) + [AnonAadhaar](https://github.com/anon-aadhaar) | Government ID ZK bridge |
 | Blockchain | [Substrate](https://docs.substrate.io/) | Voting finality, treasury, identity anchoring |
 | Storage | [IPFS](https://ipfs.tech/) + [Filecoin](https://filecoin.io/) | Decentralized proposal storage |
-| AI | Multi-LLM (Claude, Gemini, DeepSeek, GigaChat) | Deliberation engine |
+| AI | Gemini 3 Flash (MVP) → Multi-LLM (Claude, Gemini, DeepSeek) | Deliberation engine |
 | AI Safety | [NeMo Guardrails](https://github.com/NVIDIA-NeMo/Guardrails) | Constitutional AI enforcement |
 | Funding | [Quadratic Funding](https://www.radicalxchange.org/concepts/plural-voting/) | Fair resource allocation |
 
@@ -117,19 +117,20 @@ Research deep dives: [Technology Landscape 2026](docs/research/TECHNOLOGY_LANDSC
 
 ## Current Status
 
-**Phase 0 — Documentation & Research** (active)
+**Phase 1 — MVP Development** (active)
 
-The project is in its documentation-first phase. All architecture, protocols, and constitutional framework are being designed before any code is written.
+Building the core loop: **Create proposal → AI agents analyze → Vote anonymously with ZK → See results.**
 
-See [TODO.md](TODO.md) for current task tracking.
+| Component | Tech | Status |
+|-----------|------|--------|
+| App | Next.js 15 + Tailwind v4 | working |
+| AI Deliberation | Gemini 3 Flash (free tier) + Zod schemas | working |
+| Anonymous Voting | Placeholder proofs (Semaphore v4 next) | working |
+| Database | Supabase (Postgres) + Drizzle ORM | working |
+| ZK Identity | Semaphore v4.14 (browser-native) | next up |
+| Hosting | Vercel Free | pending |
 
-**Roadmap:**
-1. **Phase 0** (now): Research, architecture, constitution
-2. **Phase 1**: PWA prototype on IPFS / GitHub Pages
-3. **Phase 2**: Semaphore + MACI ZK-voting prototype
-4. **Phase 3**: Matrix federation + libp2p/RLN privacy channel
-5. **Phase 4**: AI deliberation engine (multi-model)
-6. **Phase 5**: Substrate app-chain for production voting
+See [TODO.md](TODO.md) for current tasks and [Roadmap](docs/ROADMAP.md) for the validated tech stack.
 
 ---
 
@@ -147,10 +148,9 @@ See [Landscape Analysis](docs/research/LANDSCAPE_ANALYSIS.md) for the full compa
 
 UNITA is a project for all of humanity. Contributions are welcome in any language.
 
-Read the [Constitution](docs/constitution/CONSTITUTION.md) for the values that guide this project.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards. See the [Constitution](docs/constitution/CONSTITUTION.md) for the values that guide this project.
 
 <!-- TODO: Add Matrix room links and Nostr npub once created -->
-<!-- TODO: Add CONTRIBUTING.md -->
 
 ---
 

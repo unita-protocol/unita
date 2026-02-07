@@ -1,103 +1,143 @@
 # UNITA Project TODO
 
-## Infrastructure Setup (Phase 0)
+## Phase 0 — Documentation & Research (Complete)
 
-### Completed
+### Infrastructure
 - [x] Create project email (`unita.protocol@gmail.com`)
 - [x] Set up KeePass database
 - [x] Create GitHub organization ([unita-protocol](https://github.com/unita-protocol))
 - [x] Create GitHub repo ([unita-protocol/unita](https://github.com/unita-protocol/unita))
 - [x] Initialize git, configure remote, push initial commit
 - [x] LICENSE — AGPL-3.0 (code) + CC-BY-SA 4.0 (docs)
+- [x] CONTRIBUTING.md — contribution guidelines
+- [x] CODE_OF_CONDUCT.md — Contributor Covenant v2.1
 
-### Pending — GCP & Matrix Homeserver
-> All steps detailed in [`docs/infrastructure/BOOTSTRAP_GUIDE.md`](docs/infrastructure/BOOTSTRAP_GUIDE.md)
+### Documentation
+- [x] Constitution (40 articles, 3 parts)
+- [x] System Architecture (C4 model, hexagonal design)
+- [x] Protocol Stack (Matrix, Semaphore, MACI, Substrate)
+- [x] AI Agent Framework (6 agents + tech stack + guardrails)
+- [x] Security Framework (threat model + EU AI Act)
+- [x] Landscape Analysis (30+ projects)
+- [x] Technology Landscape 2026 deep-dive
+- [x] AI Governance & Security research
+- [x] ADR-001 Protocol Selection + ADR-002 Messaging Layer
+- [x] Infrastructure Bootstrap Guide
 
-- [ ] **Create GCP project** (~10 min, browser)
-  - Sign in to [console.cloud.google.com](https://console.cloud.google.com) with `unita.protocol@gmail.com`
-  - Create project: `unita-protocol`
-  - Set billing budget alert: $1/month (safety net — all services are free tier)
-  - Save credentials to KeePass (`Admin/GCP Console`)
-
-- [ ] **Create GCP e2-micro VM** (~5 min, browser or CLI)
-  - Zone: `us-central1-a`, Image: Debian 12, Disk: 30GB
-  - Tags: `http-server`, `https-server`
-  - Open firewall: TCP 80, 443, 8448
-  - See Bootstrap Guide Section 4, Step 2 for exact `gcloud` commands
-
-- [ ] **Register DuckDNS subdomain** (~2 min, browser)
-  - Go to [duckdns.org](https://www.duckdns.org), login with GitHub
-  - Register: `unita-matrix` (gives `unita-matrix.duckdns.org`)
-  - Point to GCP VM external IP
-  - Save DuckDNS token to KeePass (`Infrastructure/DuckDNS`)
-
-- [ ] **Install Continuwuity + Caddy on VM** (~15 min, SSH)
-  - SSH: `gcloud compute ssh unita-node-01 --zone=us-central1-a`
-  - Install Docker, pull Continuwuity image
-  - Configure `continuwuity.toml` (server name, registration token)
-  - Install Caddy for automatic HTTPS
-  - See Bootstrap Guide Section 5 for copy-paste commands
-
-- [ ] **Create Matrix admin account** (~2 min)
-  - Register `@admin:unita-matrix.duckdns.org` using registration token
-  - Save to KeePass (`Social/Matrix Admin User`)
-
-- [ ] **Create Matrix rooms** (~5 min, Element client)
-  - Log in at [app.element.io](https://app.element.io) with admin account
-  - Create: `#unita-general` (public), `#unita-dev` (public), `#unita-governance` (public)
-  - Set room topics, avatar
-  - Get invite links for README
-
-### Pending — Nostr Identity
-- [ ] **Generate Nostr keypair** (~2 min, local machine)
-  - `openssl rand -hex 32` for private key
-  - Or use [nak](https://github.com/fiatjaf/nak): `nak key generate`
-  - Save private key (nsec) to KeePass (`Social/Nostr Identity`) — NEVER share
-
-- [ ] **Set up Nostr profile** (~5 min, Nostr client)
-  - Use [Primal](https://primal.net) or [Snort](https://snort.social)
-  - Display name: "UNITA Protocol"
-  - Bio: "Global P2P Liquid Democracy & Resource Equilibrium"
-  - Post first announcement note
-  - Copy npub for README
-
-### Pending — GitHub & Web
-- [ ] **Enable GitHub Pages** (~2 min, browser)
-  - Repo Settings > Pages > Source: main branch > Save
-  - Gives: `unita-protocol.github.io/unita`
-
-- [ ] **Register domain** (when budget allows)
-  - Check: `unita.org`, `unita-protocol.org`, `unita.network`
-  - Point to GitHub Pages or GCP VM
-
-### Pending — Documentation
-- [ ] **Update README** with Matrix room links and Nostr npub (after creating them)
-- [ ] **CONTRIBUTING.md** — contribution guidelines, code of conduct
-- [ ] **CODE_OF_CONDUCT.md** — community standards (consider Contributor Covenant)
+### Moltbook Community
+- [x] Claim agent (UnitaProtocol, verified via Twitter/X)
+- [x] Intro post in m/introductions (5 upvotes, 18 comments)
+- [x] Feedback request in m/builds (5 upvotes, 19 comments)
+- [x] 6 AI agents deep-dive in m/agents (5 upvotes, 14 comments)
+- [x] OWASP vs 7-layer defense in m/aisafety (26 comments)
+- [x] 5 open problems RFC in m/general (11 comments)
+- [x] 16 outbound comments across governance/ZK/AI/security topics
+- [x] Follow key contacts: HoverBot, ZorGr0k, Sentinel, ErgoBuilder
 
 ---
 
-## Development Roadmap (Phase 1+)
+## Phase 1 — MVP: "Propose → Analyze → Vote → Results" (Active)
 
-See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the full phased development plan.
+### Accounts & Infrastructure
+- [x] **Create Vercel account** — signed in with GitHub
+- [x] **Create Supabase project** — `unita-mvp`, eu-west-1, PostgreSQL 17.6
+- [x] **Database schema deployed** — 5 tables: proposals, ai_analyses, votes, groups, group_members
+- [x] **Get Google AI API key** — Gemini 3 Flash free tier (5 RPM, 250 RPD, $0)
+  - `GOOGLE_GENERATIVE_AI_API_KEY` in `.env`
+  - All 3 agents use `gemini-3-flash-preview` (upgrade to multi-model when budget allows)
 
-**Next milestones:**
-- [ ] PWA prototype on IPFS / GitHub Pages
-- [ ] Semaphore + MACI ZK-voting prototype
-- [ ] Matrix custom event types SDK (`org.unita.proposal`, etc.)
-- [ ] Budget Balancer UI component
-- [ ] AI deliberation prompt engineering (Ijtihad agent)
+### Scaffolding (Done)
+- [x] Initialize Turborepo + pnpm monorepo
+- [x] Create `apps/web` — Next.js 15 with App Router, Tailwind v4, TypeScript
+- [x] Create `packages/db` — Drizzle ORM schema (proposals, votes, groups, ai_analyses)
+- [x] Create `packages/zk` — Semaphore v4 identity + group + proof helpers
+- [x] Create `packages/ai` — 3 AI agents (Ijtihad, Economist, Guardian) with Vercel AI SDK 6
+- [x] Configure `turbo.json` with build/dev/lint pipelines
+- [x] Set up `.env.example` with all required keys
+- [x] Build passes, dev server runs, proposal creation tested end-to-end
+
+### Core Features (E2E Working)
+- [x] **Proposal creation** — form submits title + description, saved to Supabase via API
+- [x] **AI deliberation** — 3-agent analysis (Ijtihad, Economist, Guardian) via Gemini 3 Flash
+  - Zod schemas for structured output (`generateObject`) — no manual JSON parsing
+  - Gemini thinking mode enabled (`thinkingLevel: 'low'`)
+  - Structured analysis rendered as readable HTML on proposal detail page
+  - Graceful fallback to raw text if schema validation fails
+- [x] **Anonymous voting** — vote YES/NO with placeholder ZK proofs, double-vote prevention
+  - Unique constraint on `nullifierHash` prevents double-voting
+  - YES/NO counts displayed on proposal page
+- [x] **Client components** — extracted interactive buttons (`RequestAnalysisButton`, `VoteButtons`)
+
+### Remaining MVP Features
+- [ ] **ZK identity** — Semaphore identity generation in browser, group membership
+- [ ] **Real ZK proofs** — replace placeholder proofs with Semaphore proof generation + verification
+- [ ] **Results dashboard** — enhanced vote results, AI analysis summary, participation stats
+
+### Deployment
+- [ ] Deploy to Vercel (connect GitHub repo)
+- [ ] Configure Supabase connection via Vercel env vars
+- [ ] Test end-to-end: create proposal → AI analyzes → vote → see results
+
+---
+
+## Deferred — Infrastructure (After MVP Works)
+
+### GCP & Matrix Homeserver
+> Details in [`docs/infrastructure/BOOTSTRAP_GUIDE.md`](docs/infrastructure/BOOTSTRAP_GUIDE.md)
+- [ ] Create GCP project + e2-micro VM
+- [ ] DuckDNS subdomain → `unita-matrix.duckdns.org`
+- [ ] Continuwuity Matrix homeserver + Caddy HTTPS
+- [ ] Matrix admin account + rooms (#general, #dev, #governance)
+
+### Nostr Identity
+- [ ] Generate keypair, set up profile, post announcement
+
+### GitHub & Web
+- [ ] Enable GitHub Pages
+- [ ] Register domain (when budget allows)
+
+---
+
+## Deferred — Moltbook Engagement (Lower Priority)
+- [x] Post in m/aisafety — OWASP Top 10 vs 7-layer defense (26 comments, 4 substantive replied)
+- [x] Post in m/general — 5 open problems RFC (11 comments, 3 substantive replied)
+- [ ] Post in m/philosophy — liquid democracy vs representative democracy
+- [ ] Monitor 5 posts for new comments (diminishing returns — ~12% signal-to-noise)
 
 ---
 
 ## Research (Ongoing)
-
+- [x] ADR-003 — Distributed AI Deliberation & Resource Allocation (proposed)
+- [x] OWASP Agentic AI Top 10 mapping added to Security Framework
+- [x] Landscape Analysis updated: Habermas Machine, Deliberation.io, NEAR AI Delegates, Metagov Interop, Allo Protocol, Conviction Voting, Optimism RetroPGF
 - [ ] Legal wrappers — "Lex Cryptographia" in Switzerland/EU for binding votes
 - [ ] Post-quantum ZK migration path
 - [ ] Tokenized time credits design
 - [ ] Coercion resistance — MACI + DAVINCI combined analysis
 - [ ] eIDAS 2.0 EUDI Wallet integration prototype (deadline: Nov 2026)
+- [ ] Token economics specification (credit pricing, treasury funding, AI compute sustainability)
+- [ ] ResourceBreakdown schema for proposal synapse (ADR-003)
+- [ ] Metagov JSON-LD compatibility assessment
 
 ---
 
-*Last updated: 2026-02-06*
+---
+
+## Community Feedback Incorporated (Feb 2026 Moltbook Engagement)
+
+Substantive feedback from ~10 unique engagers across 5 posts, incorporated into docs:
+
+| Feedback | From | Incorporated Into |
+|----------|------|-------------------|
+| Framing Problem / Godel's incompleteness in governance | ZorGr0k | Security Framework §8 (OWASP), ADR-003 |
+| Substrate vs Cosmos SDK governance | FiverrClawOfficial | ADR-003 alternatives section |
+| Guardian false positive mitigation | FiverrClawOfficial | AI Agent Framework §3.3 (already covered) |
+| Red Team incentives: adversarial by reward | WinnieTheGeek | AI Agent Framework §3.6 incentive model |
+| Room for "unexplainable" / speculative analysis | Aoi_Hibiki | AI Agent Framework §3.7 (new agent proposed) |
+| Rational actor assumption / bias amplification | AleXsoAI | ADR-003 voter-side AI rationale |
+| Adversarial framing + latency at scale | BortDev | ADR-003 distributed compute architecture |
+| Detect/prevent/recover categorization | BobRenze | Security Framework §8 (OWASP mapping) |
+| Conflict resolution protocol suggestion | Longxia_Lobster | Future consideration |
+| Ergo eUTXO alternative | ErgoBuilder | Noted; Substrate decision stands (ADR-001) |
+
+*Last updated: 2026-02-07*

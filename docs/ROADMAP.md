@@ -1,31 +1,97 @@
 # UNITA Development Roadmap
 
-## Phase 1: The Multicultural "Ijtihad" AI
-- [ ] Create the **Pragmatic Analyst Prompt** — force AI to identify: unintended consequences, financial beneficiaries, logical fallacies
-- [ ] Research **GigaChat (Russia)** and **DeepSeek (China)** API integrations for non-Western-centric deliberation
+## Approach: Build ONE Thing That Works
 
-## Phase 2: National ID & ZK-Circuits
-- [ ] Research **Vocdoni DAVINCI** protocol for ZK-voting with recursive proof aggregation
-- [ ] Build a "Proof of Instruction" circuit — user proves they engaged with AI deliberation before voting (optional/configurable)
+No more phases-before-code. The MVP proves the core loop:
 
-## Phase 3: The Ubuntu Social Feed
-- [ ] Implement **Matrix-based notification** system for delegation alerts (custom event types), with **libp2p+RLN privacy channel** for anonymous signaling
-- [ ] Design the "Reputation of Decency" (Areté) system using Soulbound Tokens
+**Create proposal → AI agents analyze → Vote anonymously with ZK → See results**
 
-## Phase 4: The Resource & Equilibrium Layer
-- [ ] Design the **"Budget Balancer" UI component** — reactive slider preventing votes when resources exceed 100%
-- [ ] Research **Tokenized Time Credits** — P2P "Man-Power" hours for local projects
-- [ ] Develop the **"Impact Summary" AI Prompt** — JSON output of "Winners, Losers, and Inflationary Risks"
+If this doesn't work, nothing else matters. If it does, everything else builds on top.
 
-## Phase 5: AI Agent Integration & Delegation
-- [ ] Design the **AI Compute Delegation** system — opt-in shared AI credits with cryptographic revocation
-- [ ] Implement **Multi-Agent Deliberation** — Claude, Gemini, DeepSeek adversarial analysis
-- [ ] Build **NeMo Guardrails** integration — prevent AI manipulation, enforce constitutional principles
+---
 
-## Phase 6: Security & Anti-Hijacking
-- [ ] Implement **MACI** for encrypted ballot submission with ZK tally verification
-- [ ] Design **Sybil Resistance** layer — Semaphore + World ID + national ID ZK bridges
-- [ ] Create **Constitutional Enforcement Engine** — AI validation against the UNITA Constitution
+## Validated Tech Stack (Feb 2026)
+
+| Category | Package | Version | Why |
+|----------|---------|---------|-----|
+| Framework | `next` | 15.5.12 | App Router, React 19, SSR (v16 has Turbopack monorepo bug) |
+| UI | `tailwindcss` | 4.1.18 | Oxide engine (Rust), 5x faster builds |
+| AI SDK | `ai` (Vercel AI SDK) | 6.0.77 | Agent abstraction, streaming, MCP client |
+| AI - Gemini | `@ai-sdk/google` | 3.0.22 | Gemini 3 Flash — free tier (5 RPM, 250 RPD) |
+| ZK Identity | `@semaphore-protocol/core` | 4.14.2 | Anonymous proofs, browser-native |
+| ORM | `drizzle-orm` | 0.45.1 | ~7.4kb, SQL-close, serverless |
+| DB Toolkit | `drizzle-kit` | 0.31.8 | Migrations, schema push |
+| DB Driver | `postgres` | 3.4.8 | Zero-dep Postgres client |
+| Database | Supabase Free | — | 500MB Postgres, auth, real-time |
+| Monorepo | `turbo` | 2.8.3 | Intelligent caching, pnpm workspaces |
+| TypeScript | `typescript` | 5.9.3 | Strict mode |
+| Hosting | Vercel Free | — | Serverless, edge functions |
+
+**Total cost: $0/month** (Gemini 3 Flash free tier: 5 RPM, 250 RPD)
+
+---
+
+## Monorepo Structure
+
+```
+unita/
+├── apps/
+│   └── web/                    # Next.js 15 app (App Router)
+│       ├── app/
+│       │   ├── page.tsx        # Landing page
+│       │   ├── proposals/      # Create and view proposals
+│       │   ├── vote/           # ZK anonymous voting
+│       │   ├── results/        # Vote results + AI analysis
+│       │   └── api/            # Route handlers (AI agents, voting)
+│       └── components/         # React UI components
+├── packages/
+│   ├── db/                     # Drizzle schema + migrations
+│   │   ├── schema.ts           # proposals, votes, users tables
+│   │   └── drizzle.config.ts
+│   ├── zk/                     # Semaphore v4 helpers
+│   │   ├── identity.ts         # Create/store ZK identity
+│   │   ├── group.ts            # Group membership management
+│   │   └── proof.ts            # Generate/verify proofs
+│   └── ai/                     # AI deliberation (Gemini 3 Flash)
+│       ├── agents.ts           # 3 agents with Zod structured output
+│       ├── prompts.ts          # System prompts for each agent
+│       └── index.ts            # Package exports
+├── turbo.json
+├── pnpm-workspace.yaml
+└── package.json
+```
+
+---
+
+## The MVP Flow
+
+### 1. Create Proposal
+User submits title + description. Saved to Supabase via Drizzle.
+
+### 2. AI Deliberation (3 Agents)
+Each proposal is analyzed by three AI agents running in parallel:
+
+**Ijtihad Agent** (Deliberation):
+> Steel-man FOR and AGAINST. Identify 3 unintended consequences. List who benefits and who pays. Rate logical consistency 1-10.
+
+**Economist Agent** (Sustainability):
+> Calculate resource intensity. Suggest 3 budget trade-offs. Expose hidden costs of "free" promises.
+
+**Guardian Agent** (Constitutional):
+> Check against UNITA Constitution Articles 1-40. Rate: PASS / CONDITIONAL / REJECT. Suggest amendments if needed.
+
+All three agents run independently on Gemini 3 Flash (free tier). When multi-model budget allows, each agent can use a different model (Claude, Gemini, GPT). Disagreements are shown to voters — no hidden aggregation.
+
+### 3. Anonymous Voting
+- User generates Semaphore identity (EdDSA keypair, stored in browser)
+- Joins the proposal's voting group
+- Generates ZK proof: "I am a member and I vote YES/NO" — without revealing who
+- Proof verified on-chain or server-side
+
+### 4. Results
+- Live vote tally (verified proofs only)
+- AI analysis summary with disagreement highlights
+- Participation statistics
 
 ---
 
@@ -55,17 +121,21 @@
 
 ---
 
-## Research Gaps
+## After MVP: What Comes Next
 
-1. **Coercion Resistance** — MACI + Vocdoni DAVINCI combined anti-collusion and proof-aggregation
-2. **Global Translation** — P2P nodes + LLMs for real-time translation into 20 most spoken languages
-3. **Legal Wrappers** — "Lex Cryptographia" in Switzerland/EU for legally binding UNITA votes; Aragon Court for on-chain disputes
-4. **AI Safety** — Adversarial attacks on deliberation agents: prompt injection, model manipulation, coordinated campaigns
-5. **Quantum Resistance** — Migration path to post-quantum ZK proofs
+Once the core loop works, we layer on:
+
+1. **Matrix integration** — federated governance rooms, real-time deliberation
+2. **MACI anti-collusion** — encrypted ballots, bribery resistance (wait for MACI v3)
+3. **National ID bridges** — eIDAS 2.0 EUDI Wallet, AnonAadhaar
+4. **Liquid delegation** — delegate your vote to experts per topic
+5. **Budget Balancer** — resource equilibrium UI
+6. **Substrate chain** — on-chain voting finality for production
+7. **NeMo Guardrails** — AI safety enforcement layer
 
 ---
 
-## Design Concepts
+## Design Concepts (Preserved from Research)
 
 ### Hacendera (Communal Labor)
 In Spanish tradition, voting often led to a *Hacendera* — a day where the village worked together on the project they voted for. UNITA's "Crowd-Action" module lets users commit time or resources if a proposal passes.
@@ -81,5 +151,15 @@ Instead of "Karma" or "Likes," users earn Areté as Soulbound Tokens by:
 - Participating in Hacendera community work
 
 ### The Global Wallet
-- **Quadratic Funding for Global Tasks** — "Global GDP Fund" matches individual votes exponentially for projects that help the whole world
-- **The "Work-Vote" Link** — "Man-power" hours verified on-chain via ZK proofs; building a local school increases your "Education" vote weight
+- **Quadratic Funding for Global Tasks** — "Global GDP Fund" matches individual votes exponentially
+- **The "Work-Vote" Link** — "Man-power" hours verified on-chain via ZK proofs
+
+---
+
+## Research Gaps (Ongoing)
+
+1. **Coercion Resistance** — MACI + Vocdoni DAVINCI combined anti-collusion and proof-aggregation
+2. **Global Translation** — P2P nodes + LLMs for real-time translation into 20 most spoken languages
+3. **Legal Wrappers** — "Lex Cryptographia" in Switzerland/EU for legally binding UNITA votes
+4. **AI Safety** — Adversarial attacks on deliberation agents: prompt injection, model manipulation
+5. **Quantum Resistance** — Migration path to post-quantum ZK proofs

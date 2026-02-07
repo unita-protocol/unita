@@ -1,0 +1,35 @@
+{
+  "name": "@unita/web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^15.5.12",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "@unita/db": "workspace:*",
+    "@unita/zk": "workspace:*",
+    "@unita/ai": "workspace:*",
+    "drizzle-orm": "^0.45.1",
+    "postgres": "^3.4.8",
+    "@semaphore-protocol/core": "^4.14.2",
+    "ai": "^6.0.77",
+    "@ai-sdk/google": "^3.0.22"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.9.3",
+    "tailwindcss": "^4.1.18",
+    "@tailwindcss/postcss": "^4.1.18",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.5.12"
+  }
+}
